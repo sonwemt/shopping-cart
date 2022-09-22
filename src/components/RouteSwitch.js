@@ -5,50 +5,50 @@ import Navbar from "./Navbar";
 import ProductCard from "./ProductCard";
 import Shopping from "./Shopping";
 import ShoppingCart from "./ShoppingCart";
-import uniqid from 'uniqid';
 
 const shopItems = [
   {
     name: 'Shoe',
     description: 'Description of a shoe',
-    id: uniqid(),
+    id: 'shoeid',
     index: 0,
   },
   {
     name: 'Socks',
     description: 'Description of a set of socks',
-    id: uniqid(),
+    id: 'sockid',
     index: 1,
   },
   {
     name: 'Sweater',
     description: 'Description of a sweater',
-    id: uniqid(),
+    id: 'sweaterid',
     index: 2,
   },
   {
     name: 'T-Shirt',
     description: 'Description of a t-shirt',
-    id: uniqid(),
+    id: 'tshirtid',
     index: 3,
   },
   {
     name: 'Pants',
     description: 'Description of a pair of pants',
-    id: uniqid(),
+    id: 'pantsid',
     index: 4,
   },
   {
     name: 'Gloves',
     description: 'Description of a set of gloves',
-    id: uniqid(),
-    index: 5,
+    id: 'glovesid',
+    index: 5
   }, 
 ]
 
 export default function RouteSwitch() {
   const [cartContent, setCartContent] = useState([]);
   const [itemsInCart, setItemsInCart] = useState(0);
+
   useEffect(() => {
     let total = 0;
     cartContent.forEach((item) => {
@@ -83,6 +83,10 @@ export default function RouteSwitch() {
       newArray[index].amount += 1;
     } else {
         newArray[index].amount -= 1;
+        if(newArray[index].amount < 1) {
+          newArray.splice(index, 1);
+          newArray.forEach((item, i) => item.index = i);
+        }
     }
     setCartContent(newArray);
   }
@@ -92,10 +96,7 @@ export default function RouteSwitch() {
     <Routes>
       <Route path='/'element={<Homepage />}/>  
       <Route path='/shop/*' element={<Shopping 
-      cartContent={cartContent}
       shopItems={shopItems}
-      addToCart={addToCart}
-      changeContentAmount={changeContentAmount}
       itemsInCart={itemsInCart} /> }> 
       </Route>
       <Route path="/shop/:id" element={<ProductCard 
@@ -104,7 +105,7 @@ export default function RouteSwitch() {
       changeContentAmount={changeContentAmount}
       itemsInCart={itemsInCart} 
       />} />
-      <Route path='/cart' element={<ShoppingCart itemsInCart={itemsInCart}/>} />
+      <Route path='/cart' element={<ShoppingCart itemsInCart={itemsInCart} cartContent={cartContent}/>} />
     </Routes>
   </BrowserRouter>);
 }

@@ -53,7 +53,7 @@ export default function ProductCard(props, item) {
           <button>Add to cart</button> </> : 
         <>
           <div>Added to cart! <button type="button" onClick={handleDecrease}>-</button> <span>{isInCart.amount}</span> <button type="button" onClick={handleIncrease}>+</button></div>
-          <button disabled={true}>Add to cart</button>
+          <Link to="/cart"><button type="button">Go to cart</button></Link>
         </>
         }
       </form>
